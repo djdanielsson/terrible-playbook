@@ -2,4 +2,4 @@
 collections:
  - name: ansible.posix
    version: ">=1.0.0"
- - name: infra.leapp
+ - name: infra.aap_configuration
