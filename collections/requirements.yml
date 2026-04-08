@@ -6,3 +6,4 @@ collections:
    version: 4.0.0
  - name: beyondtrust.secrets_safe
    version: 1.1.0
+ - name: infra.aap_configuration
