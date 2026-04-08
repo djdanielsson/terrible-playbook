@@ -14,3 +14,15 @@
         password: '{{ vcenter_password }}'
       register: ext_info
       delegate_to: localhost
+    
+    - name: Create Folder
+      beyondtrust.secrets_safe.folders_create:
+        # PASSWORD_SAFE_API_URL, PASSWORD_SAFE_CLIENT_ID and PASSWORD_SAFE_CLIENT_SECRET are environment variables.
+        api_url: "{{ lookup('ansible.builtin.env', 'PASSWORD_SAFE_API_URL') }}"
+        client_id: "{{ lookup('ansible.builtin.env', 'PASSWORD_SAFE_CLIENT_ID') }}"
+        client_secret: "{{ lookup('ansible.builtin.env', 'PASSWORD_SAFE_CLIENT_SECRET') }}"
+        api_version: "3.0"
+        data:
+          name: "my_folder_name"
+          folder_name: "parent_folder"
+          description: "folder description"
