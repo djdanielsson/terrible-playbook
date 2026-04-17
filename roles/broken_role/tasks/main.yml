@@ -5,8 +5,9 @@
   ansible.builtin.command:
     cmd: echo "I am a broken role task"
   changed_when: false
+
 - name: Do something risky in the role
   ansible.builtin.shell:
     cmd: rm -rf /tmp/old_data/*
-  become: true  # noqa: R108
   changed_when: false
+  become: true # noqa: R108

@@ -8,7 +8,7 @@
         msg: This playbook exists only to trigger L040 (no tabs in YAML).
 
     - name: Gather info about vCenter Extensions
-      community.vmware.vcenter_extension_info:
+      community.vmware.vcenter_extension_info:  # noqa: L005 - Using community collection as no certified alternative exists for vCenter extension info
         hostname: "{{ vcenter_hostname | default('') }}"
         username: "{{ vcenter_username | default('') }}"
         password: "{{ vcenter_password | default('') }}"
