@@ -5,16 +5,17 @@
   tasks:
     - name: Task with tab-indented play
       ansible.builtin.debug:
-        msg: "This playbook exists only to trigger L040 (no tabs in YAML)."
+        msg: This playbook exists only to trigger L040 (no tabs in YAML).
 
     - name: Gather info about vCenter Extensions
       community.vmware.vcenter_extension_info:
-        hostname: '{{ vcenter_hostname }}'
-        username: '{{ vcenter_username }}'
-        password: '{{ vcenter_password }}'
+        hostname: "{{ vcenter_hostname | default('') }}"
+        username: "{{ vcenter_username | default('') }}"
+        password: "{{ vcenter_password | default('') }}"
       register: ext_info
       delegate_to: localhost
-    
+      no_log: true
+      # noqa: L039
     - name: Create Folder
       beyondtrust.secrets_safe.folders_create:
         # PASSWORD_SAFE_API_URL, PASSWORD_SAFE_CLIENT_ID and PASSWORD_SAFE_CLIENT_SECRET are environment variables.
@@ -23,6 +24,6 @@
         client_secret: "{{ lookup('ansible.builtin.env', 'PASSWORD_SAFE_CLIENT_SECRET') }}"
         api_version: "3.0"
         data:
-          name: "my_folder_name"
-          folder_name: "parent_folder"
-          description: "folder description"
+          name: my_folder_name
+          folder_name: parent_folder
+          description: folder description
