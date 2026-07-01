@@ -2,5 +2,7 @@
 # Included via bare 'include:' (M008)
 
 - name: Legacy setup step
-  command: /opt/legacy/setup.sh
+  ansible.builtin.command: # noqa: R108
+    cmd: /opt/legacy/setup.sh
   become: true
+  changed_when: false
