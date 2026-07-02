@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: terrible-playbook-backup
+  title: terrible-playbook (backup)
+  description: Ansible playbook repo — backup branch, registered for APME quality scanning
+  annotations:
+    backstage.io/source-location: url:https://github.com/djdanielsson/terrible-playbook
+    github.com/project-slug: djdanielsson/terrible-playbook
+    ansible.io/scm-provider: github
+    ansible.io/scm-host: github.com
+    ansible.io/scm-organization: djdanielsson
+    ansible.io/scm-repository: terrible-playbook
+  tags:
+    - git-repository
+    - github
+spec:
+  type: git-repository
+  lifecycle: experimental
+  owner: guests
+  repository_name: terrible-playbook
+  repository_default_branch: backup
+  repository_collection_count: 0
+  repository_ee_count: 0
