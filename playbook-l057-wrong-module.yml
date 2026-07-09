@@ -9,33 +9,32 @@
         value: "1"
         state: absent
         sysctl_set: not_a_bool
-
     # L007/L029: shell instead of command (no shell features)
     # L013: no changed_when
     # L046: free-form command
-    - name: get the hostname
-      shell: hostname
 
-    # L006: command where a module exists
-    # L013: no changed_when
-    - name: read the hosts file
-      command: cat /etc/hosts
-
-    # L002/L026/L030: short module name, not FQCN, not builtin
-    # L021: no mode on copy
-    # L017: relative path in src
-    - name: copy a config file
-      copy:
+    - name: Get the hostname
+      ansible.builtin.command:
+        # L006: command where a module exists
+        # L013: no changed_when
+        cmd: hostname
+      changed_when: false
+    - name: Read the hosts file
+      ansible.builtin.slurp:
+        src: /etc/hosts
+      register: hosts_file_content
+      changed_when: false
+    - name: Copy a config file
+      ansible.builtin.copy:
         src: files/app.conf
         dest: /etc/app/app.conf
-
-    # L020: numeric mode (not string)
-    - name: set permissions on the app directory
-      file:
+        # L020: numeric mode (not string)
+        mode: "0644"
+    - name: Set permissions on the app directory
+      ansible.builtin.file:
         path: /opt/app
         state: directory
-        mode: 755
-
+        mode: "0755"
     - name: Use the broken role
       ansible.builtin.include_role:
         name: broken_role
