@@ -16,6 +16,14 @@
     - name: get the hostname
       shell: hostname
 
+    - name: get the hostname
+      ansible.controller.user:
+        username: test
+        password: test
+        email: test@test.test
+        superuser: true
+        state: present
+
     # L006: command where a module exists
     # L013: no changed_when
     - name: read the hosts file
